@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import data.Vendedor;
+import data.Produto;
 import data.Usuario;
 import data.Venda;
 import jakarta.servlet.http.HttpSession;
@@ -30,6 +31,7 @@ public class Controller extends HttpServlet {
     Usuario usuario = new Usuario();
     Venda venda = new Venda();
     Vendedor vendedor = new Vendedor();
+    Produto produto = new Produto();
 
     public Controller() {
         super();
@@ -95,21 +97,19 @@ public class Controller extends HttpServlet {
         }
     }
     
-    /*
     protected void novaVenda(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
     	venda.setComprador(request.getParameter("comprador"));
     	venda.setCategoria(request.getParameter("categoria"));
-    	venda.setNomeProduto(request.getParameter("nomeProduto"));
+    	produto.setNomeProduto(request.getParameter("nomeProduto"));
     	venda.setDataVenda(request.getParameter("dataVenda"));
-    	venda.setQuantidade(request.getParameter("quantidade"));
-    	venda.setValorUnitario(request.getParameter("valorUnitario"));
+    	produto.setQuantidadeProduto(Integer.parseInt(request.getParameter("quantidade")));
+    	produto.setPrecoProduto((Double.parseDouble(request.getParameter("valorUnitario"))));
     	
     	vendaDAO.cadastrarVenda(venda);
     	
-    	vendas(request, response);
     	response.sendRedirect("cadastrarVenda.html");
-    } */
+    }
     
     /*
     protected void vendas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
