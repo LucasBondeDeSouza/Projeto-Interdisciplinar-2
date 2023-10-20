@@ -44,8 +44,8 @@ public class Controller extends HttpServlet {
             novoVendedor(request, response);
         } else if (action.equals("/login")) {
             request.getRequestDispatcher("login.html").forward(request, response);
-        /*} else if (action.equals("/cadastrarVenda")) {
-        	novaVenda(request, response); */
+        } else if (action.equals("/cadastrarVenda")) {
+        	novaVenda(request, response);
         } else {
             response.sendRedirect("index.html");
         }
@@ -89,6 +89,7 @@ public class Controller extends HttpServlet {
         boolean loginValido = vendedorDAO.verificarLogin(email, senha);
         if (loginValido) {
             HttpSession session = (HttpSession) request.getSession();
+            //session.setAttribute("nomeVendedor", vendedorDAO.getNomeVendedorPorEmail(email));
             session.setAttribute("email", email);
             response.sendRedirect("menu.html");
         } else {
@@ -101,14 +102,14 @@ public class Controller extends HttpServlet {
     	
     	venda.setComprador(request.getParameter("comprador"));
     	venda.setCategoria(request.getParameter("categoria"));
-    	produto.setNomeProduto(request.getParameter("nomeProduto"));
+    	venda.setNomeProduto(request.getParameter("nomeProduto"));
     	venda.setDataVenda(request.getParameter("dataVenda"));
-    	produto.setQuantidadeProduto(Integer.parseInt(request.getParameter("quantidade")));
-    	produto.setPrecoProduto((Double.parseDouble(request.getParameter("valorUnitario"))));
+    	venda.setQuantidadeProduto(Integer.parseInt(request.getParameter("quantidade")));
+    	venda.setPrecoProduto((Double.parseDouble(request.getParameter("valorUnitario"))));
     	
     	vendaDAO.cadastrarVenda(venda);
     	
-    	response.sendRedirect("cadastrarVenda.html");
+    	response.sendRedirect("menu.html");
     }
     
     /*

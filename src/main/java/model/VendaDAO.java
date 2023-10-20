@@ -31,14 +31,15 @@ public class VendaDAO {
 			
 			pst.setString(1, venda.getComprador());
             pst.setString(2, venda.getCategoria());
-            pst.setString(3, venda.getProduto().getNomeProduto());
-            pst.setDouble(4, venda.getProduto().getPrecoProduto());
+            pst.setString(3, venda.getNomeProduto());
+            pst.setDouble(4, venda.getPrecoProduto());
             pst.setString(5, venda.getDataVenda());
-            pst.setInt(6, venda.getProduto().getQuantidadeProduto());
-            pst.setString(6, venda.getVendedor().getNome());
+            pst.setInt(6, venda.getQuantidadeProduto());
             
          // Executar a Query
             pst.executeUpdate();
+            
+            vendas.add(venda);
             
          // Encerrar a conexão com o Banco
             con.close();

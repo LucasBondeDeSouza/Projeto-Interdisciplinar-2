@@ -1,9 +1,6 @@
 package data;
 
-import data.Produto;
-import data.Vendedor;
-
-public class Venda {
+public class Venda extends Produto {
 	
 	private int idVenda;
     private String comprador;
@@ -77,4 +74,46 @@ public class Venda {
             
         return valorTotal;
     }
+
+	@Override
+	public int getIdProduto() {
+		return super.getIdProduto();
+	}
+
+	@Override
+	public void setIdProduto(int idProduto) {
+		super.setIdProduto(idProduto);
+	}
+
+	@Override
+	public String getNomeProduto() {
+		return super.getNomeProduto();
+	}
+
+	@Override
+	public void setNomeProduto(String nomeProduto) {
+		super.setNomeProduto(nomeProduto);
+	}
+
+	@Override
+	public int getQuantidadeProduto() {
+		return super.getQuantidadeProduto();
+	}
+
+	@Override
+	public void setQuantidadeProduto(int quantidadeProduto) {
+		super.setQuantidadeProduto(quantidadeProduto);
+	}
+
+	@Override
+	public double getPrecoProduto() {
+		return super.getPrecoProduto();
+	}
+
+	@Override
+	public void setPrecoProduto(double precoProduto) {
+		super.setPrecoProduto(precoProduto);
+	}
+    
+    
 }
