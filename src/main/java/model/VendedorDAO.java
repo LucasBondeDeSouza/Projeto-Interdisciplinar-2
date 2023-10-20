@@ -17,26 +17,69 @@ public class VendedorDAO {
 		String create = "insert into tabela_vendedor (vendedor_nome, vendedor_email, vendedor_senha) values (?,?,?)";
 
         try (Connection con = DAO.conectar()){
+        	
+        	if (!emailJaCadastrado(vendedor.getEmail(), con) && !senhaJaCadastrada(vendedor.getSenha(), con)) {
+        		
+        		// Preparar a Query para execução no Banco de Dados
+                PreparedStatement pst = con.prepareStatement(create);
+                
+             // Substituir os parametros (?) pelo conteúdo das variáveis Javabeans
+                pst.setString(1, vendedor.getNome());
+                pst.setString(2, vendedor.getEmail());
+                
+                String senhaHash = hashSenha(vendedor.getSenha());
+                pst.setString(3, senhaHash);
 
-            // Preparar a Query para execução no Banco de Dados
-            PreparedStatement pst = con.prepareStatement(create);
+                // Executar a Query
+                pst.executeUpdate();
 
-            // Substituir os parametros (?) pelo conteúdo das variáveis Javabeans
-            pst.setString(1, vendedor.getNome());
-            pst.setString(2, vendedor.getEmail());
-            
-            String senhaHash = hashSenha(vendedor.getSenha());
-            pst.setString(3, senhaHash);
-
-            // Executar a Query
-            pst.executeUpdate();
-
-            // Encerrar a conexão com o Banco
-            con.close();
+                // Encerrar a conexão com o Banco
+                con.close();
+        	} else {
+        		System.out.println("Email ou Senha já cadastrado no banco.");
+        	}
         } catch (SQLException e) {
         	System.out.println(e);
         }
     }
+	
+	// Método para verificar se o email já está cadastrada no banco
+	private boolean emailJaCadastrado(String email, Connection con) {
+		String query = "SELECT COUNT(*) FROM tabela_vendedor WHERE vendedor_email=?";
+		
+		try {
+			PreparedStatement pst = con.prepareStatement(query);
+			pst.setString(1, email);
+			ResultSet rs = pst.executeQuery();
+			
+			if (rs.next()) {
+				int count = rs.getInt(1);
+				return count > 0;
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return false;
+	}
+	
+	// Método para verificar se a senha já está cadastrada no banco
+	private boolean senhaJaCadastrada(String senha, Connection con) {
+	    String query = "SELECT COUNT(*) FROM tabela_vendedor WHERE vendedor_senha=?";
+	    String senhaHash = hashSenha(senha);
+	    try {
+	        PreparedStatement pst = con.prepareStatement(query);
+	        pst.setString(1, senhaHash);
+	        ResultSet rs = pst.executeQuery();
+
+	        if (rs.next()) {
+	            int count = rs.getInt(1);
+	            return count > 0; 
+	        }
+	    } catch (SQLException e) {
+	        System.out.println(e);
+	    }
+	    return false;
+	}
 	
 	private String hashSenha(String senha) {
     	try {

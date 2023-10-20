@@ -24,7 +24,7 @@ public class VendaDAO {
 	
 	public void cadastrarVenda(Venda venda) {
 		
-		String create = "INSERT INTO tabela_vendas (comprador, categoria, nome_produto, valor_produto, data_venda, quantidade_produto, nome_vendedor) values (?,?,?,?,?,?,?)";
+		String create = "INSERT INTO tabela_vendas (comprador, categoria, nome_produto, valor_produto, data_venda, quantidade_produto) values (?,?,?,?,?,?)";
 		
 		try (Connection con = DAO.conectar()) {
 			PreparedStatement pst = con.prepareStatement(create);
@@ -35,6 +35,7 @@ public class VendaDAO {
             pst.setDouble(4, venda.getPrecoProduto());
             pst.setString(5, venda.getDataVenda());
             pst.setInt(6, venda.getQuantidadeProduto());
+            //pst.setString(7, venda.getNomeVendedor());
             
          // Executar a Query
             pst.executeUpdate();
@@ -48,6 +49,7 @@ public class VendaDAO {
 		}
 	}
 	
+	/*
 	public List<Venda> listarVendas() {
 		List<Venda> vendas = new ArrayList<>();
 		
@@ -84,5 +86,5 @@ public class VendaDAO {
 		}
 		
 		return vendas;
-	}
+	} */
 }

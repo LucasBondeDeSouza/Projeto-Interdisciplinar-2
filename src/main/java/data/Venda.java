@@ -7,18 +7,18 @@ public class Venda extends Produto {
     private String categoria;
     private Produto produto;
     private String dataVenda;
-    private Vendedor vendedor;
+    private String nomeVendedor;
     
     public Venda(){
     }
 
-    public Venda(int idVenda, String comprador, String categoria, Produto produto, String dataVenda, Vendedor vendedor) {
+    public Venda(int idVenda, String comprador, String categoria, Produto produto, String dataVenda, String nomeVendedor) {
         this.idVenda = idVenda;
         this.comprador = comprador;
         this.categoria = categoria;
         this.produto = produto;
         this.dataVenda = dataVenda;
-        this.vendedor = vendedor;
+        this.nomeVendedor = nomeVendedor;
     }
 
     public String getComprador() {
@@ -61,12 +61,12 @@ public class Venda extends Produto {
         this.dataVenda = dataVenda;
     }
 
-    public Vendedor getVendedor() {
-        return vendedor;
+    public String getNomeVendedor() {
+        return nomeVendedor;
     }
 
-    public void setVendedor(Vendedor vendedor) {
-        this.vendedor = vendedor;
+    public void setNomeVendedor(String nomeVendedor) {
+        this.nomeVendedor = nomeVendedor;
     }
 
     public Double calcularValor() {

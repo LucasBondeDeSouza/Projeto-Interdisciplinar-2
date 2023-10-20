@@ -106,7 +106,7 @@ ArrayList<Venda> lista = (ArrayList<Venda>)request.getAttribute("vendas");
 
                 <div class="navbar-nav align-items-center ms-auto">
                     <div class="nav-item dropdown">
-                        <a href="#" class="btn btn-danger m-2">Sair</a>
+                        <a href="logout.jsp" class="btn btn-danger m-2">Sair</a>
                     </div>
                 </div>
             </nav>
