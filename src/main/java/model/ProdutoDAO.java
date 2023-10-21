@@ -25,8 +25,8 @@ public class ProdutoDAO {
 
             // Substituir os parametros (?) pelo conteúdo das variáveis Javabeans
             pst.setString(1, produto.getNomeProduto());
-            pst.setInt(2, produto.getQuantidadeProduto());
-            pst.setDouble(3, produto.getPrecoProduto());
+            pst.setInt(2, produto.getQuantidade());
+            pst.setDouble(3, produto.getValor());
 
             // Executar a Query
             pst.executeUpdate();

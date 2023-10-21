@@ -14,7 +14,7 @@ public class VendedorDAO {
 	
 	public void inserirVendedor(Vendedor vendedor) {
 		
-		String create = "insert into tabela_vendedor (vendedor_nome, vendedor_email, vendedor_senha) values (?,?,?)";
+		String create = "insert into vendedores (nome, email, senha) values (?,?,?)";
 
         try (Connection con = DAO.conectar()){
         	
@@ -45,7 +45,7 @@ public class VendedorDAO {
 	
 	// Método para verificar se o email já está cadastrada no banco
 	private boolean emailJaCadastrado(String email, Connection con) {
-		String query = "SELECT COUNT(*) FROM tabela_vendedor WHERE vendedor_email=?";
+		String query = "SELECT COUNT(*) FROM vendedores WHERE email=?";
 		
 		try {
 			PreparedStatement pst = con.prepareStatement(query);
@@ -64,7 +64,7 @@ public class VendedorDAO {
 	
 	// Método para verificar se a senha já está cadastrada no banco
 	private boolean senhaJaCadastrada(String senha, Connection con) {
-	    String query = "SELECT COUNT(*) FROM tabela_vendedor WHERE vendedor_senha=?";
+	    String query = "SELECT COUNT(*) FROM vendedores WHERE senha=?";
 	    String senhaHash = hashSenha(senha);
 	    try {
 	        PreparedStatement pst = con.prepareStatement(query);
@@ -99,7 +99,7 @@ public class VendedorDAO {
     }
 	
 	public boolean verificarLogin(String email, String senha) {
-        String query = "SELECT vendedor_senha FROM tabela_vendedor WHERE vendedor_email=?";
+        String query = "SELECT senha FROM vendedores WHERE email=?";
         
         try (Connection con = DAO.conectar()){
             PreparedStatement pst = con.prepareStatement(query);
@@ -107,7 +107,7 @@ public class VendedorDAO {
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
-                String senhaHashArmazenada = rs.getString("vendedor_senha");
+                String senhaHashArmazenada = rs.getString("senha");
                 String senhaHashDigitada = hashSenha(senha);
 
                 // Comparar os hashes da senha armazenada e da senha digitada

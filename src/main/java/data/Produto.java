@@ -4,15 +4,15 @@ public class Produto {
 	
 	private int idProduto;
     private String nomeProduto;
-    private int quantidadeProduto;
-    private double precoProduto;
+    private int quantidade;
+    private double valor;
     
-	public Produto(int idProduto, String nomeProduto, int quantidadeProduto, double precoProduto) {
+	public Produto(int idProduto, String nomeProduto, int quantidade, double valor) {
 		super();
 		this.idProduto = idProduto;
 		this.nomeProduto = nomeProduto;
-		this.quantidadeProduto = quantidadeProduto;
-		this.precoProduto = precoProduto;
+		this.quantidade = quantidade;
+		this.valor = valor;
 	}
 
 	public Produto() {
@@ -35,19 +35,19 @@ public class Produto {
 		this.nomeProduto = nomeProduto;
 	}
 
-	public int getQuantidadeProduto() {
-		return quantidadeProduto;
+	public int getQuantidade() {
+		return quantidade;
 	}
 
-	public void setQuantidadeProduto(int quantidadeProduto) {
-		this.quantidadeProduto = quantidadeProduto;
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
 	}
 
-	public double getPrecoProduto() {
-		return precoProduto;
+	public double getValor() {
+		return valor;
 	}
 
-	public void setPrecoProduto(double precoProduto) {
-		this.precoProduto = precoProduto;
-	}
+	public void setValor(double valor) {
+		this.valor = valor;
+	}  
 }

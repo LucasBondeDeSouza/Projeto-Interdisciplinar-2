@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class VendaDAO {
 	
 	public void cadastrarVenda(Venda venda) {
 		
-		String create = "INSERT INTO tabela_vendas (comprador, categoria, nome_produto, valor_produto, data_venda, quantidade_produto) values (?,?,?,?,?,?)";
+		String create = "INSERT INTO vendas (comprador, categoria, nomeProduto, valor, dataVenda, quantidade, nomeVendedor) values (?,?,?,?,?,?,?)";
 		
 		try (Connection con = DAO.conectar()) {
 			PreparedStatement pst = con.prepareStatement(create);
@@ -32,10 +33,10 @@ public class VendaDAO {
 			pst.setString(1, venda.getComprador());
             pst.setString(2, venda.getCategoria());
             pst.setString(3, venda.getNomeProduto());
-            pst.setDouble(4, venda.getPrecoProduto());
+            pst.setDouble(4, venda.getValor());
             pst.setString(5, venda.getDataVenda());
-            pst.setInt(6, venda.getQuantidadeProduto());
-            //pst.setString(7, venda.getNomeVendedor());
+            pst.setInt(6, venda.getQuantidade());
+            pst.setString(7, venda.getNomeVendedor());
             
          // Executar a Query
             pst.executeUpdate();
@@ -48,16 +49,17 @@ public class VendaDAO {
 			System.out.println(e);
 		}
 	}
-	
+
 	/*
-	public List<Venda> listarVendas() {
-		List<Venda> vendas = new ArrayList<>();
+	public ArrayList<Venda> listarVendas() {
+		// Criando um objeto para acessar a Classe JavaBeans
+		ArrayList<Venda> vendas = new ArrayList<>();
 		
-		String create = "SELECT * FROM tabela_vendas order by vendas_id";
+		String read = "SELECT * FROM vendas order by idVenda";
 		
 		try (Connection con = DAO.conectar()) {
 			
-			PreparedStatement pst = con.prepareStatement(create);
+			PreparedStatement pst = con.prepareStatement(read);
 			ResultSet rs = pst.executeQuery();
 			
 			while (rs.next()) {
@@ -66,19 +68,16 @@ public class VendaDAO {
                 Produto produto = new Produto();
                 Vendedor vendedor = new Vendedor();
 				
-                venda.setIdVenda(rs.getInt("vendas_id"));
-                venda.setComprador(rs.getString("comprador"));
-                venda.setCategoria(rs.getString("categoria"));
-                produto.setNomeProduto(rs.getString("nome_produto"));
-                produto.setPrecoProduto(rs.getDouble("valor_produto"));
-                venda.setDataVenda(rs.getString("data_venda"));
-                produto.setQuantidadeProduto(rs.getInt("quantidade_produto"));
-                vendedor.setNome(rs.getString("nome_vendedor"));
+                int idVenda = rs.getInt(1);
+                String comprador = rs.getString(2);
+                String categoria = rs.getString(3);
+                String nomeProduto = rs.getString(4);
+                Double preco = rs.getDouble(5);
+                String dataVenda = rs.getString(6);
+                int quantidade = rs.getInt(7);
+                String nomeVendedor = rs.getString(8);
 
-                venda.setProduto(produto);
-                venda.setVendedor(vendedor);
-                
-                vendas.add(venda);
+                vendas.add(new Venda(idVenda, comprador, categoria, nomeProduto, preco, dataVenda, quantidade, nomeVendedor));
 			}
 			con.close();
 		} catch (SQLException e) {
@@ -87,4 +86,31 @@ public class VendaDAO {
 		
 		return vendas;
 	} */
+	
+	public ArrayList<Venda> listarVendas() {
+		ArrayList<Venda> vendas = new ArrayList<>();
+		String read = "select * from vendas order by idVendas";
+		
+		try(Connection con = DAO.conectar()) {
+			PreparedStatement pst = con.prepareStatement(read);
+			ResultSet rs = pst.executeQuery();
+			
+			while (rs.next()) {
+				int idVenda = rs.getInt(1);
+				String comprador = rs.getString(2);
+				String categoria = rs.getString(3);
+				String nomeProduto = rs.getString(4);
+				double valor = rs.getDouble(5);
+				String dataVenda = rs.getString(6);
+				int quantidade = rs.getInt(7);
+				String nomeVendedor = rs.getString(8);
+				
+				vendas.add(new Venda(idVenda, comprador, categoria, nomeProduto, valor, dataVenda, quantidade, nomeVendedor));
+			}
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return vendas;
+	}
 }

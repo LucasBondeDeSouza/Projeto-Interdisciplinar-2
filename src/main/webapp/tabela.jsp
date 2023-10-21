@@ -4,10 +4,7 @@
 <%@ page import="data.Venda"%>
 <%@ page import="java.util.ArrayList"%>
 
-
-<%
-ArrayList<Venda> lista = (ArrayList<Venda>)request.getAttribute("vendas");
-%>
+<% ArrayList<Venda> lista = (ArrayList<Venda>)request.getAttribute("vendas"); %>
 
 <!DOCTYPE html>
 <html>
@@ -135,15 +132,17 @@ ArrayList<Venda> lista = (ArrayList<Venda>)request.getAttribute("vendas");
                                 
                                    <% for (int i = 0; i < lista.size(); i++){ %>
                                         <tr>
-                                            <td><%=lista.get(i).getVendaId()%></td>
+                                            <td><%=lista.get(i).getIdVenda()%></td>
                                             <td><%=lista.get(i).getComprador()%></td>
                                             <td><%=lista.get(i).getCategoria()%></td>
                                             <td><%=lista.get(i).getNomeProduto()%></td>
                                             <td><%=lista.get(i).getDataVenda()%></td>
                                             <td><%=lista.get(i).getQuantidade()%></td>
-                                            <td><%=lista.get(i).getValorUnitario()%></td>
+                                            <td><%=lista.get(i).getValor()%></td>
+                                            <td><%=lista.get(i).getNomeVendedor()%></td>
                                         </tr>
                                   <%}%>
+                                  
                             </tbody>
                         </table>
 

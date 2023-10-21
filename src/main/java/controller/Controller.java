@@ -1,5 +1,6 @@
 package controller;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -7,6 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import jakarta.servlet.RequestDispatcher;
 
 import data.Vendedor;
 import data.Produto;
@@ -46,6 +49,8 @@ public class Controller extends HttpServlet {
             request.getRequestDispatcher("login.html").forward(request, response);
         } else if (action.equals("/cadastrarVenda")) {
         	novaVenda(request, response);
+        } else if (action.equals("/tabela")) {
+        	vendas(request, response);
         } else {
             response.sendRedirect("index.html");
         }
@@ -104,19 +109,20 @@ public class Controller extends HttpServlet {
     	venda.setCategoria(request.getParameter("categoria"));
     	venda.setNomeProduto(request.getParameter("nomeProduto"));
     	venda.setDataVenda(request.getParameter("dataVenda"));
-    	venda.setQuantidadeProduto(Integer.parseInt(request.getParameter("quantidade")));
-    	venda.setPrecoProduto((Double.parseDouble(request.getParameter("valorUnitario"))));
+    	venda.setQuantidade(Integer.parseInt(request.getParameter("quantidade")));
+    	venda.setValor((Double.parseDouble(request.getParameter("valor"))));
+    	venda.setNomeVendedor(request.getParameter("nomeVendedor"));
     	
     	vendaDAO.cadastrarVenda(venda);
     	
-    	response.sendRedirect("menu.html");
+    	response.sendRedirect("tabela.jsp");
     }
     
-    /*
     protected void vendas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArrayList<Venda> lista = dao.listarVendas();
-        request.setAttribute("vendas", lista);
-        jakarta.servlet.RequestDispatcher rd = request.getRequestDispatcher("cadastrarVenda.html");
-        rd.forward(request, response);
-    } */
+    	ArrayList<Venda> lista = vendaDAO.listarVendas();
+    	
+    	request.setAttribute("vendas", lista);
+    	RequestDispatcher rd = request.getRequestDispatcher("tabela.jsp");
+    	rd.forward(request, response);
+    }
 }
