@@ -7,9 +7,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
-import jakarta.servlet.RequestDispatcher;
 
 import data.Vendedor;
 import data.Produto;
@@ -22,7 +22,7 @@ import model.VendedorDAO;
 import model.DAO;
 
 @WebServlet(urlPatterns = {
-    "/controller", "/main", "/insert", "/login", "/cadastrarVenda"
+    "/controller", "/main", "/insert", "/login", "/cadastrarVenda", "/select", "/update", "/delete"
 })
 public class Controller extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -42,6 +42,7 @@ public class Controller extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getServletPath();
+        System.out.println(action);
 
         if (action.equals("/insert")) {
             novoVendedor(request, response);
@@ -49,9 +50,13 @@ public class Controller extends HttpServlet {
             request.getRequestDispatcher("login.html").forward(request, response);
         } else if (action.equals("/cadastrarVenda")) {
         	novaVenda(request, response);
-        } else if (action.equals("/tabela")) {
-        	vendas(request, response);
-        } else {
+        } else if (action.equals("/select")) {
+        	listarVenda(request, response);
+        } else if (action.equals("/update")) {
+        	editarVenda(request, response);
+        } else if (action.equals("/excluir")) {
+        	excluirVenda(request, response);
+        }else {
             response.sendRedirect("index.html");
         }
     }
@@ -118,11 +123,50 @@ public class Controller extends HttpServlet {
     	response.sendRedirect("tabela.jsp");
     }
     
-    protected void vendas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	ArrayList<Venda> lista = vendaDAO.listarVendas();
+    protected void listarVenda(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
-    	request.setAttribute("vendas", lista);
-    	RequestDispatcher rd = request.getRequestDispatcher("tabela.jsp");
+    	int idVendas = Integer.parseInt(request.getParameter("idVendas"));
+    	
+    	venda.setIdVendas(idVendas);
+    	
+    	vendaDAO.selecionarVenda(venda);
+    	
+    	request.setAttribute("idVendas", venda.getIdVendas());
+    	request.setAttribute("comprador", venda.getComprador());
+    	request.setAttribute("categoria", venda.getCategoria());
+    	request.setAttribute("nomeProduto", venda.getNomeProduto());
+    	request.setAttribute("dataVenda", venda.getDataVenda());
+    	request.setAttribute("valor", venda.getValor());
+    	request.setAttribute("quantidade", venda.getQuantidade());
+    	request.setAttribute("nomeVendedor", venda.getNomeVendedor());
+    	
+    	RequestDispatcher rd = request.getRequestDispatcher("editar.jsp");
     	rd.forward(request, response);
     }
+    
+    protected void editarVenda(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	venda.setIdVendas(Integer.parseInt(request.getParameter("idVendas")));
+    	venda.setComprador(request.getParameter("comprador"));
+    	venda.setCategoria(request.getParameter("categoria"));
+    	venda.setNomeProduto(request.getParameter("nomeProduto"));
+    	venda.setDataVenda(request.getParameter("dataVenda"));
+    	venda.setQuantidade(Integer.parseInt(request.getParameter("quantidade")));
+    	venda.setValor((Double.parseDouble(request.getParameter("valor"))));
+    	venda.setNomeVendedor(request.getParameter("nomeVendedor"));
+    	
+    	vendaDAO.alterarVenda(venda);
+    	
+    	response.sendRedirect("tabela.jsp");
+    }
+    
+    protected void excluirVenda(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	int idVendas = Integer.parseInt(request.getParameter("idVendas"));
+    	
+    	vendaDAO.excluirVenda(idVendas);
+    	
+    	response.sendRedirect("tabela.jsp");
+    }
+    
 }

@@ -16,12 +16,11 @@ import data.Produto;
 import data.Vendedor;
 
 public class VendaDAO {
-
-	private List<Venda> vendas;
 	
-	public VendaDAO() {
-		this.vendas = new ArrayList<>();
-	}
+	Connection con;
+	PreparedStatement pstm;
+	ResultSet rs;
+	ArrayList<Venda> lista = new ArrayList<>();
 	
 	public void cadastrarVenda(Venda venda) {
 		
@@ -41,8 +40,6 @@ public class VendaDAO {
          // Executar a Query
             pst.executeUpdate();
             
-            vendas.add(venda);
-            
          // Encerrar a conexão com o Banco
             con.close();
 		} catch (Exception e) {
@@ -50,67 +47,96 @@ public class VendaDAO {
 		}
 	}
 
-	/*
-	public ArrayList<Venda> listarVendas() {
-		// Criando um objeto para acessar a Classe JavaBeans
-		ArrayList<Venda> vendas = new ArrayList<>();
+	public ArrayList<Venda> listarVendas() throws SQLException {
 		
-		String read = "SELECT * FROM vendas order by idVenda";
+		String sql = "select * from vendas";
+		new DAO();
+		con = DAO.conectar();
 		
-		try (Connection con = DAO.conectar()) {
-			
-			PreparedStatement pst = con.prepareStatement(read);
-			ResultSet rs = pst.executeQuery();
+		try {
+			pstm = con.prepareStatement(sql);
+			rs = pstm.executeQuery(sql);
 			
 			while (rs.next()) {
+				Venda objVenda = new Venda();
+				objVenda.setIdVendas(rs.getInt("idVendas"));
+				objVenda.setComprador(rs.getString("comprador"));
+				objVenda.setCategoria(rs.getString("categoria"));
+				objVenda.setNomeProduto(rs.getString("nomeProduto"));
+				objVenda.setDataVenda(rs.getString("dataVenda"));
+				objVenda.setValor(rs.getDouble("valor"));
+				objVenda.setQuantidade(rs.getInt("quantidade"));
+				objVenda.setNomeVendedor(rs.getString("nomeVendedor"));
 				
-				Venda venda = new Venda();
-                Produto produto = new Produto();
-                Vendedor vendedor = new Vendedor();
-				
-                int idVenda = rs.getInt(1);
-                String comprador = rs.getString(2);
-                String categoria = rs.getString(3);
-                String nomeProduto = rs.getString(4);
-                Double preco = rs.getDouble(5);
-                String dataVenda = rs.getString(6);
-                int quantidade = rs.getInt(7);
-                String nomeVendedor = rs.getString(8);
-
-                vendas.add(new Venda(idVenda, comprador, categoria, nomeProduto, preco, dataVenda, quantidade, nomeVendedor));
+				lista.add(objVenda);
 			}
-			con.close();
+			
 		} catch (SQLException e) {
-			System.out.println(e);
+			
 		}
 		
-		return vendas;
-	} */
+		return lista;
+	}
 	
-	public ArrayList<Venda> listarVendas() {
-		ArrayList<Venda> vendas = new ArrayList<>();
-		String read = "select * from vendas order by idVendas";
+	public void selecionarVenda(Venda venda) {
+		String read2 = "select * from vendas where idVendas = ?";
 		
-		try(Connection con = DAO.conectar()) {
-			PreparedStatement pst = con.prepareStatement(read);
+		try {
+			Connection con = DAO.conectar();
+			PreparedStatement pst = con.prepareStatement(read2);
+			pst.setInt(1, venda.getIdVendas());
 			ResultSet rs = pst.executeQuery();
 			
 			while (rs.next()) {
-				int idVenda = rs.getInt(1);
-				String comprador = rs.getString(2);
-				String categoria = rs.getString(3);
-				String nomeProduto = rs.getString(4);
-				double valor = rs.getDouble(5);
-				String dataVenda = rs.getString(6);
-				int quantidade = rs.getInt(7);
-				String nomeVendedor = rs.getString(8);
-				
-				vendas.add(new Venda(idVenda, comprador, categoria, nomeProduto, valor, dataVenda, quantidade, nomeVendedor));
+				venda.setIdVendas(rs.getInt(1));
+				venda.setComprador(rs.getString(2));
+				venda.setCategoria(rs.getString(3));
+				venda.setNomeProduto(rs.getString(4));
+				venda.setDataVenda(rs.getString(5));
+				venda.setValor(rs.getDouble(6));
+				venda.setQuantidade(rs.getInt(7));
+				venda.setNomeVendedor(rs.getString(8));
 			}
 			con.close();
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		return vendas;
+	} 
+	
+	public void alterarVenda(Venda venda) {
+		String create = "update vendas set comprador=?, categoria=?, nomeProduto=?, dataVenda=?, valor=?, quantidade=?, nomeVendedor=? where idVendas=?";
+		
+		try {
+			Connection con = DAO.conectar();
+			PreparedStatement pst = con.prepareStatement(create);
+			
+			pst.setString(1, venda.getComprador());
+			pst.setString(2, venda.getCategoria());
+			pst.setString(3, venda.getNomeProduto());
+			pst.setString(4, venda.getDataVenda());
+			pst.setDouble(5, venda.getValor());
+			pst.setInt(6, venda.getQuantidade());
+			pst.setString(7, venda.getNomeVendedor());
+			pst.setInt(8, venda.getIdVendas());
+			pst.executeUpdate();
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
+	
+	public void excluirVenda(int idVendas) {
+	    String delete = "DELETE FROM vendas WHERE idVendas = ?";
+
+	    try {
+	        Connection con = DAO.conectar();
+	        PreparedStatement pst = con.prepareStatement(delete);
+	        pst.setInt(1, idVendas);
+	        pst.executeUpdate();
+	        con.close();
+	    } catch (Exception e) {
+	        System.out.println(e);
+	    }
+	}
+
 }
