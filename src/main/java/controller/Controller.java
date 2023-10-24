@@ -7,18 +7,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
-
-import data.Vendedor;
-import data.Produto;
 import data.Usuario;
 import data.Venda;
 import jakarta.servlet.http.HttpSession;
-import model.ProdutoDAO;
 import model.VendaDAO;
-import model.VendedorDAO;
+import model.UsuarioDAO;
 import model.DAO;
 
 @WebServlet(urlPatterns = {
@@ -28,13 +22,10 @@ public class Controller extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
     DAO dao = new DAO();
-    ProdutoDAO produtoDAO = new ProdutoDAO();
     VendaDAO vendaDAO = new VendaDAO();
-    VendedorDAO vendedorDAO = new VendedorDAO();
+    UsuarioDAO usuarioDAO = new UsuarioDAO();
     Usuario usuario = new Usuario();
     Venda venda = new Venda();
-    Vendedor vendedor = new Vendedor();
-    Produto produto = new Produto();
 
     public Controller() {
         super();
@@ -45,7 +36,7 @@ public class Controller extends HttpServlet {
         System.out.println(action);
 
         if (action.equals("/insert")) {
-            novoVendedor(request, response);
+            novoUsuario(request, response);
         } else if (action.equals("/login")) {
             request.getRequestDispatcher("login.html").forward(request, response);
         } else if (action.equals("/cadastrarVenda")) {
@@ -54,7 +45,7 @@ public class Controller extends HttpServlet {
         	listarVenda(request, response);
         } else if (action.equals("/update")) {
         	editarVenda(request, response);
-        } else if (action.equals("/excluir")) {
+        } else if (action.equals("/delete")) {
         	excluirVenda(request, response);
         }else {
             response.sendRedirect("index.html");
@@ -69,22 +60,14 @@ public class Controller extends HttpServlet {
         }
     }
 
-    /*
-    protected void usuarios(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArrayList<Usuario> lista = dao.listarUsuarios();
-        request.setAttribute("usuarios", lista);
-        jakarta.servlet.RequestDispatcher rd = request.getRequestDispatcher("login.html");
-        rd.forward(request, response);
-    } */
-
-    protected void novoVendedor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        vendedor.setNome(request.getParameter("nome"));
-        vendedor.setEmail(request.getParameter("email"));
+    protected void novoUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        usuario.setNome(request.getParameter("nome"));
+        usuario.setEmail(request.getParameter("email"));
         String senha = request.getParameter("senha");
         
         if (senha != null) {
-        	vendedor.setSenha(senha);
-        	vendedorDAO.inserirVendedor(vendedor);
+        	usuario.setSenha(senha);
+        	usuarioDAO.inserirUsuario(usuario);
         	response.sendRedirect("login.html");
         } else {
         	String mensagemErro = "A senha é obrigatória. Preencha todos os campos.";
@@ -96,7 +79,7 @@ public class Controller extends HttpServlet {
     protected void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
-        boolean loginValido = vendedorDAO.verificarLogin(email, senha);
+        boolean loginValido = usuarioDAO.verificarLogin(email, senha);
         if (loginValido) {
             HttpSession session = (HttpSession) request.getSession();
             //session.setAttribute("nomeVendedor", vendedorDAO.getNomeVendedorPorEmail(email));

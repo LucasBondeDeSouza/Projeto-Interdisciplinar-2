@@ -1,19 +1,12 @@
 package model;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.DriverManager;
 import java.util.ArrayList;
-import java.util.List;
 
 import data.Venda;
-import data.Produto;
-import data.Vendedor;
 
 public class VendaDAO {
 	

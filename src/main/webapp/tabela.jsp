@@ -126,6 +126,14 @@
                        try {
                            VendaDAO objVenda = new VendaDAO();
                            ArrayList<Venda> lista = objVenda.listarVendas();
+                           
+                           if (lista.isEmpty()) {
+                   %>  
+                               <tr>
+                                   <td colspan="9">Nehuma Venda Cadastrada!</td>
+                               </tr>
+                   <% 
+                           } else {
 
                            for (int i = 0; i < lista.size(); i++) {
                    %>
@@ -140,18 +148,20 @@
                        <td><%= lista.get(i).getNomeVendedor() %></td>
                        <td>
                            <a href="select?idVendas=<%=lista.get(i).getIdVendas()%>" class="btn btn-primary mb-1"><strong>Editar</strong></a>
-                           
-                           <form method="post" action="delete" onsubmit="return confirm('Tem certeza que deseja excluir esta venda?')">
-                               <input type="hidden" name="idVendas" value="<%= lista.get(i).getIdVendas() %>">
-                               <button type="submit" class="btn btn-danger mb-1"><strong>Excluir</strong></button>
-                           </form>
+                           <a href="delete?idVendas=<%= lista.get(i).getIdVendas() %>" class="btn btn-danger mb-1"><strong>Excluir</strong></a>
                        </td>
                  </tr>
                  <%
                            }
+                        }
                     } catch (Exception e) {
+                    	%>
+                        <tr>
+                            <td colspan="9">Nenhum dado cadastrado!</td>
+                        </tr>
+                        <%
                     }
-                  %>
+                  %> 
            </table>
                     </div>
                 </div>
