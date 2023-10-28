@@ -2,23 +2,31 @@ package data;
 
 public class Usuario {
 
+	private int idUsuario;
 	private String nome;
 	private String email;
 	private String senha;
 	
-	// Constructors
-	public Usuario(String nome, String email, String senha) {
+	public Usuario(int idUsuario, String nome, String email, String senha) {
 		super();
+		this.idUsuario = idUsuario;
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;
 	}
-	
+
 	public Usuario() {
 		super();
 	}
-	
-	// Getters and Setters
+
+	public int getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(int idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -34,7 +42,7 @@ public class Usuario {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getSenha() {
 		return senha;
 	}

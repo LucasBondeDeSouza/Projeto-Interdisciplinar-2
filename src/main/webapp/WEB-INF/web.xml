@@ -44,4 +44,34 @@
     <servlet-name>CadastroUsuario</servlet-name>
     <url-pattern>/CadastroUsuario</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>DownloadCSVServlet</display-name>
+    <servlet-name>DownloadCSVServlet</servlet-name>
+    <servlet-class>controller.DownloadCSVServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DownloadCSVServlet</servlet-name>
+    <url-pattern>/DownloadCSVServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ExportCSVServlet</display-name>
+    <servlet-name>ExportCSVServlet</servlet-name>
+    <servlet-class>controller.ExportCSVServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ExportCSVServlet</servlet-name>
+    <url-pattern>/ExportCSVServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UsuariosController</display-name>
+    <servlet-name>UsuariosController</servlet-name>
+    <servlet-class>controller.UsuariosController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UsuariosController</servlet-name>
+    <url-pattern>/UsuariosController</url-pattern>
+  </servlet-mapping>
 </web-app>

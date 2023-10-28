@@ -4,30 +4,28 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.security.MessageDigest;
 
-import data.Vendedor;
+import data.Usuario;
 
-public class VendedorDAO {
+public class UsuarioDAO {
 	
-	public void inserirVendedor(Vendedor vendedor) {
+	public void inserirUsuario(Usuario usuario) {
 		
-		String create = "insert into vendedores (nome, email, senha) values (?,?,?)";
+		String create = "insert into usuarios (nome, email, senha) values (?,?,?)";
 
         try (Connection con = DAO.conectar()){
         	
-        	if (!emailJaCadastrado(vendedor.getEmail(), con) && !senhaJaCadastrada(vendedor.getSenha(), con)) {
+        	if (!emailJaCadastrado(usuario.getEmail(), con) && !senhaJaCadastrada(usuario.getSenha(), con)) {
         		
         		// Preparar a Query para execução no Banco de Dados
                 PreparedStatement pst = con.prepareStatement(create);
                 
              // Substituir os parametros (?) pelo conteúdo das variáveis Javabeans
-                pst.setString(1, vendedor.getNome());
-                pst.setString(2, vendedor.getEmail());
+                pst.setString(1, usuario.getNome());
+                pst.setString(2, usuario.getEmail());
                 
-                String senhaHash = hashSenha(vendedor.getSenha());
+                String senhaHash = hashSenha(usuario.getSenha());
                 pst.setString(3, senhaHash);
 
                 // Executar a Query
@@ -45,7 +43,7 @@ public class VendedorDAO {
 	
 	// Método para verificar se o email já está cadastrada no banco
 	private boolean emailJaCadastrado(String email, Connection con) {
-		String query = "SELECT COUNT(*) FROM vendedores WHERE email=?";
+		String query = "SELECT COUNT(*) FROM usuarios WHERE email=?";
 		
 		try {
 			PreparedStatement pst = con.prepareStatement(query);
@@ -64,7 +62,7 @@ public class VendedorDAO {
 	
 	// Método para verificar se a senha já está cadastrada no banco
 	private boolean senhaJaCadastrada(String senha, Connection con) {
-	    String query = "SELECT COUNT(*) FROM vendedores WHERE senha=?";
+	    String query = "SELECT COUNT(*) FROM usuarios WHERE senha=?";
 	    String senhaHash = hashSenha(senha);
 	    try {
 	        PreparedStatement pst = con.prepareStatement(query);
@@ -99,7 +97,7 @@ public class VendedorDAO {
     }
 	
 	public boolean verificarLogin(String email, String senha) {
-        String query = "SELECT senha FROM vendedores WHERE email=?";
+        String query = "SELECT senha FROM usuarios WHERE email=?";
         
         try (Connection con = DAO.conectar()){
             PreparedStatement pst = con.prepareStatement(query);

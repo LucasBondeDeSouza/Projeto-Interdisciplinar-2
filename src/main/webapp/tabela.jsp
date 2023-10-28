@@ -1,18 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
-
-<%@ page import="data.Venda"%>
-<%@ page import="java.util.ArrayList"%>
-
-<% ArrayList<Venda> lista = (ArrayList<Venda>)request.getAttribute("vendas"); %>
-
+<%@page import="model.VendaDAO" %>
+<%@page import="data.Venda" %>
+<%@page import="java.util.ArrayList" %>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Tabela Vendas</title>
-
-<!-- Google Web Fonts -->
+    <meta charset="utf-8">
+    <title>Tabela Vendas</title>
+    
+    <!-- Google Web Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap" rel="stylesheet"> 
     
     <!-- Icon Font Stylesheet -->
@@ -24,7 +20,6 @@
 
     <!-- Template Stylesheet -->
     <link href="resources/css/style.css" rel="stylesheet">
-
 </head>
 
 <style>
@@ -57,11 +52,14 @@
     .exportar {
         background-color: #61C373;
         border-color: #61C373;
+        color: #fff;
+        font-weight: 700;
     }
     
     .exportar:hover {
         background-color: #47a859;
         border-color: #47a859;
+        color: #fff;
     }
 </style>
 
@@ -108,50 +106,77 @@
                 </div>
             </nav>
             <!-- Navbar End -->
-
+            
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
-                
+            
                 <div class="bg-secondary rounded h-100 p-4">
                     <h1 class="mb-4"><strong>Vendas</strong></h1>
+                    <form action="exportCSV" method="GET" class="export-button">
+                         <button type="submit" class="btn exportar" >
+                             Exportar CSV
+                         </button>
+                    </form>
+                    
                     <div class="table-responsive">
                         <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Comprador</th>
-                                    <th scope="col">Categoria</th>
-                                    <th scope="col">Produto</th>
-                                    <th scope="col">Data</th>
-                                    <th scope="col">Quantidade</th>
-                                    <th scope="col">Valor Unitário</th>
-                                    <th scope="col">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                   <% for (int i = 0; i < lista.size(); i++){ %>
-                                        <tr>
-                                            <td><%=lista.get(i).getIdVenda()%></td>
-                                            <td><%=lista.get(i).getComprador()%></td>
-                                            <td><%=lista.get(i).getCategoria()%></td>
-                                            <td><%=lista.get(i).getNomeProduto()%></td>
-                                            <td><%=lista.get(i).getDataVenda()%></td>
-                                            <td><%=lista.get(i).getQuantidade()%></td>
-                                            <td><%=lista.get(i).getValor()%></td>
-                                            <td><%=lista.get(i).getNomeVendedor()%></td>
-                                        </tr>
-                                  <%}%>
-                                  
-                            </tbody>
-                        </table>
+                    <tr>
+                         <th>#</th>
+                         <th>Comprador</th>
+                         <th>Categoria</th>
+                         <th>Produto</th>
+                         <th>Data Venda</th>
+                         <th>Valor</th>
+                         <th>Quantidade</th>
+                         <th>Vendedor</th>
+                         <th>Ações</th>
+                   </tr>
+                   <%
+                       try {
+                           VendaDAO objVenda = new VendaDAO();
+                           ArrayList<Venda> lista = objVenda.listarVendas();
+                           
+                           if (lista.isEmpty()) {
+                   %>  
+                               <tr>
+                                   <td colspan="9">Nehuma Venda Cadastrada!</td>
+                               </tr>
+                   <% 
+                           } else {
 
-                        <input type="button" class="btn btn-danger mb-1 exportar" value="Exportar" onclick="exportar()">
-
+                           for (int i = 0; i < lista.size(); i++) {
+                   %>
+                  <tr>
+                       <td><%= lista.get(i).getIdVendas() %></td>
+                       <td><%= lista.get(i).getComprador() %></td>
+                       <td><%= lista.get(i).getCategoria() %></td>
+                       <td><%= lista.get(i).getNomeProduto() %></td>
+                       <td><%= lista.get(i).getDataVenda() %></td>
+                       <td><%= "R$" + lista.get(i).getValor() %></td>
+                       <td><%= lista.get(i).getQuantidade() %></td>
+                       <td><%= lista.get(i).getNomeVendedor() %></td>
+                       <td>
+                           <a href="select?idVendas=<%=lista.get(i).getIdVendas()%>" class="btn btn-primary mb-1"><strong>Editar</strong></a>
+                           <a href="delete?idVendas=<%= lista.get(i).getIdVendas() %>" class="btn btn-danger mb-1"><strong>Excluir</strong></a>
+                       </td>
+                 </tr>
+                 <%
+                           }
+                        }
+                    } catch (Exception e) {
+                    	%>
+                        <tr>
+                            <td colspan="9">Nenhum dado cadastrado!</td>
+                        </tr>
+                        <%
+                    }
+                  %> 
+           </table>
                     </div>
                 </div>
             </div>
             <!-- Table End -->
+            
         </div> 
         <!-- Content End -->
     </div>
@@ -161,6 +186,6 @@
 
     <!-- Template Javascript -->
     <script src="resources/js/main.js"></script>
-    <script src="scripts/exportar.js"></script>
+    <script src="scripts/confirmador.js"></script>
 </body>
 </html>

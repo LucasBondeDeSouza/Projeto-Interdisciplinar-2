@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,6 +32,10 @@
 		font-size: 18px;
 		font-weight: 800;
 	}
+	
+	input {
+	   color: white;
+	}
 
     .form-control {
         width: 100%; 
@@ -52,6 +58,11 @@
         background-color: #000;
         color: #fff;
         border: none;
+    }
+    
+    #caixa3 {
+        background: black;
+        border: 1px solid #ff0000;
     }
 </style>
 
@@ -102,39 +113,48 @@
             <!-- Form Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-secondary rounded h-100 p-4">
-                    <h1 class="mb-4"><strong>Cadastrar Venda</strong></h1>
-                    <form class="form-floating mb-3" name="frmVenda" action="cadastrarVenda">
-						<!-- <input type="hidden" name="action" value="cadastrarVenda"> -->
-						<!-- <input type="hidden" name="usuario_id" value="${sessionScope.userId}" -->
+                    <h1 class="mb-4"><strong>Editar Venda</strong></h1>
+                    <form class="form-floating mb-3" name="frmVenda" action="update">
+                        <div class="form-floating mb-3">
+                            <input type="number" name="idVendas" id="caixa3" readonly
+                            value = "<%out.print(request.getAttribute("idVendas")); %>">
+                        </div>
 						<div class="form-floating mb-3">
-                            <input type="text" name="comprador" class="form-control" id="floatingText" placeholder="Nome..." required>
+                            <input type="text" name="comprador" class="form-control" id="floatingText" placeholder="Nome..." required
+                            value = "<%out.print(request.getAttribute("comprador")); %>">
                             <label for="floatingText"><Strong>Comprador</Strong></label>
                         </div>
                         <div class="form-floating mb-3">
-                             <select name="categoria" id="nomeCategoria" required>
+                             <select name="categoria" id="nomeCategoria" required
+                             value = "<%out.print(request.getAttribute("categoria")); %>">
                                 <option value="" selected disabled><strong>Categoria</strong></option>
                                 <option value="E-commerce"><strong>E-commerce</strong></option>
                                 <option value="Loja Fisica"><strong>Loja Física</strong></option>
                              </select>
                         </div> 
                         <div class="form-floating mb-3">
-                            <input type="text" name="nomeProduto" class="form-control" id="floatingText" placeholder="Nome..." required>
+                            <input type="text" name="nomeProduto" class="form-control" id="floatingText" placeholder="Nome..." required
+                            value = "<%out.print(request.getAttribute("nomeProduto")); %>">
                             <label for="floatingText"><Strong>Nome Produto</Strong></label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="date" name="dataVenda" class="form-control" id="floatingInput" placeholder="nome@exemplo.com" required>
+                            <input type="date" name="dataVenda" class="form-control" id="floatingInput" placeholder="nome@exemplo.com" required
+                            value = "<%out.print(request.getAttribute("dataVenda")); %>">
                             <label for="floatingInput"><Strong>Data da Venda</Strong></label>
                         </div>
                         <div class="form-floating mb-3">
-                             <input type="number" name="quantidade" class="form-control" id="floatingPassword" placeholder="Senha..." required>
+                             <input type="number" name="valor" class="form-control" id="floatingPassword" placeholder="Senha..." required
+                             value = "<%out.print(request.getAttribute("valor")); %>">
+                             <label for="floatingPassword"><Strong>Valor Unitário</Strong></label>
+                        </div>
+                        <div class="form-floating mb-3">
+                             <input type="number" name="quantidade" class="form-control" id="floatingPassword" placeholder="Senha..." required
+                             value = "<%out.print(request.getAttribute("quantidade")); %>">
                              <label for="floatingPassword"><Strong>Quantidade</Strong></label>
                         </div>
                         <div class="form-floating mb-3">
-                             <input type="number" name="valor" class="form-control" id="floatingPassword" placeholder="Senha..." required>
-                             <label for="floatingPassword"><Strong>Valor</Strong></label>
-                        </div>
-                        <div class="form-floating mb-3">
-                             <input type="text" name="nomeVendedor" class="form-control" id="floatingPassword" placeholder="Senha..." required>
+                             <input type="text" name="nomeVendedor" class="form-control" id="floatingPassword" placeholder="Senha..." required
+                             value = "<%out.print(request.getAttribute("nomeVendedor")); %>">
                              <label for="floatingPassword"><Strong>Nome Vendedor</Strong></label>
                         </div>
                         
