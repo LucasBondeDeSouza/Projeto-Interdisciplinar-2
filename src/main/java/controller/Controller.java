@@ -151,5 +151,4 @@ public class Controller extends HttpServlet {
     	
     	response.sendRedirect("tabela.jsp");
     }
-    
 }

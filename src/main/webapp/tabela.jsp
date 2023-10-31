@@ -45,16 +45,19 @@
         border-color: #3194da;
     }
 
-    .btn-primary, .btn-danger {
+    .btn-primary, .btn-danger, .exportar {
         font-weight: 700;
     }
     
     .exportar {
+        color: #fff;
         background-color: #61C373;
         border-color: #61C373;
+        margin-bottom: 15px;
     }
     
     .exportar:hover {
+        color: #fff;
         background-color: #47a859;
         border-color: #47a859;
     }
@@ -109,6 +112,11 @@
             
                 <div class="bg-secondary rounded h-100 p-4">
                     <h1 class="mb-4"><strong>Vendas</strong></h1>
+                    
+                    <form action="exportCSV" method="GET" class="export-button">
+                        <button type="submit" class="btn exportar">Exportar CSV</button>
+                    </form>
+                    
                     <div class="table-responsive">
                         <table class="table">
                     <tr>
