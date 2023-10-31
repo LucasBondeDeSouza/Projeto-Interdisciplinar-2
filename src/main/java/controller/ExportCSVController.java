@@ -23,6 +23,17 @@ public class ExportCSVController extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String action = request.getServletPath();
+        System.out.println(action);
+        
+        if (action.equals("/exportCSV")) {
+        	exportarCSV(request, response);
+        } else {
+        	response.sendRedirect("index.html");
+        }
+    }
+	
+	protected void exportarCSV(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/csv");
 		response.setHeader("Content-Disposition", "attachment; filename=\"vendas.csv\"");
 		
@@ -55,5 +66,5 @@ public class ExportCSVController extends HttpServlet {
 	    } catch (Exception e) {
 		    e.printStackTrace();
 	    }
-    }
+	}
 }
